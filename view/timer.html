@@ -1,0 +1,58 @@
+<head></head>
+<body>
+	<h1>Cronômetro</h1>
+    <div id="chronoExample">
+        <div class="values">00:00:00</div>
+        <div>
+            <button class="startButton">Iniciar</button>
+            <button class="pauseButton" >Pausar</button>
+            <button class="stopButton">Parar</button>
+            <button class="resetButton">Reiniciar</button>
+            <button class="close">Fechar</button>
+        </div>
+    </div>
+    <script>
+        const {
+            ipcRenderer
+        } = require('electron');
+        const Timer = require('easytimer.js');
+        const timer = new Timer();
+        document.querySelector('#chronoExample .startButton').addEventListener('click', 
+            function () {
+                timer.start();
+            }
+        );
+        document.querySelector('#chronoExample .pauseButton').addEventListener('click',
+            function () {
+                timer.pause();
+            }
+        );
+        document.querySelector('#chronoExample .stopButton').addEventListener('click',
+            function () {
+                timer.stop();
+            }
+        );
+        document.querySelector('#chronoExample .resetButton').addEventListener('click',
+            function () {
+                timer.reset();
+            }
+        );
+        document.querySelector('#chronoExample .close').addEventListener('click',
+            function () {
+                ipcRenderer.send('closeTimerWindow');
+            }
+        );
+        timer.addEventListener('secondsUpdated', function (e) {
+            document.querySelector('#chronoExample .values').innerHTML = 
+            timer.getTimeValues().toString();
+        });
+        timer.addEventListener('started', function (e) {
+            document.querySelector('#chronoExample .values').innerHTML = 
+            timer.getTimeValues().toString();
+        });
+        timer.addEventListener('reset', function (e) {
+            document.querySelector('#chronoExample .values').innerHTML = 
+            timer.getTimeValues().toString();
+        });
+	</script>
+</body>
